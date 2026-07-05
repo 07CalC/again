@@ -1,0 +1,235 @@
+---
+title: "The hyprland experience"
+date: "2025-06-29"
+description: "My hyprland experience as a long time GNOME user"
+tags: ["linux", "hyprland"]
+image: "https://vinm.me/blog/hyprland.png"
+---
+
+# TLDR - my dotfiles: [Aurora](https://github.com/07calc/aurora)
+
+---
+
+# Background
+
+I've been a Ubuntu + GNOME user since 2021, when I was in 11th grade. I got a laptop to prepare for JEE (since COVID and lockdown were going on, my parents thought studying online would be better). Fast forward about four months — I started playing <H>**Valorant**</H>. I was kinda addicted to it and didn’t really study much.
+
+That’s when my journey with Linux began.
+
+I had heard about Linux from a few places — like it's this high-end operating system only software engineers use, blah blah. I found out that Linux doesn’t support games like Valorant because those games install a security system into the kernel. So I decided to install Linux to force myself to study rather than spend all day playing Valorant.
+
+<H>**Now comes the big question.**</H>
+
+### Which Linux distro to use
+
+I searched `the best linux distro out there` on Google and got some big names — `Ubuntu`, `Linux Mint`, `Pop!_OS`, `Fedora`, and a few others. And being the smartest man alive, I decided to go with Ubuntu — because it was the first option I was served.
+
+# Ubuntu
+
+Flashed a USB stick with Ubuntu and installed it fresh on my laptop (not dual boot — removed Windows 🤡). Ubuntu comes with GNOME by default.
+
+### What is GNOME?
+
+**Google says:**
+
+> `GNOME is a free and open-source desktop environment for Linux and other Unix-like operating systems. It provides a user-friendly graphical interface and a set of applications for interacting with the operating system, making it easier for users, especially those less familiar with command-line interfaces, to use Linux.`
+
+In simple words, it’s basically the **UI/UX layer** that sits on top of your operating system and makes it usable — like the Start menu, taskbar, file manager, system settings, and how your windows look and behave.
+
+If Linux is the engine, **GNOME (or Hyprland)** is the steering wheel.
+
+---
+
+### Pros of GNOME
+
+- Pre-installed with Ubuntu — no setup needed.
+- Clean and minimal UI — feels like Windows, but from Meesho.
+- App ecosystem — comes with out-of-the-box apps like Calendar, Terminal, Software Store.
+- Customizing GNOME is *kinda* easy — download a theme/icon pack from [gnome-look.org](https://www.gnome-look.org) and apply it with GNOME Tweaks.
+
+---
+
+### Cons of GNOME
+
+- Customization is easy, but **very limited**. Moving the dock was almost impossible for me at one point.
+- Deprecated extensions — most good ones are outdated and not supported on newer GNOME versions.
+
+---
+
+I was kinda happy with this setup. It was smooth, fast, and looked great (sadly, I don’t have any screenshots of it). It had a top bar with a workspace menu on the left, clock and media controls in the center, internet speed and dashboard on the right — and a floating dock at the bottom, exactly like macOS.
+
+## Why i left ubuntu and gnome
+
+A few days ago, I started working at a place as a React Native developer. I tried setting up the dev environment for the app and ran into some issues — mostly caused by the combination of the **college proxy** and **Linux**.
+
+So I decided to dual boot with Windows.
+
+And of course, me being the *greatest developer of all time*, I completely messed up the installation and ended up wiping Ubuntu entirely. 
+
+Now I was stuck on a freshly installed Windows-only machine — no configs, no tools, no GNOME setup. And to make it worse, I hadn’t backed up anything. Didn’t know how to use dotfiles either.
+
+I did have some screenshots of my GNOME extensions... as my version of dotfiles. 😭😭😭
+
+![Extensions-manager-screenshot](https://cdn.discordapp.com/attachments/1101417616716857366/1160604854532722778/Screenshot_from_2023-10-08_21-18-25.png?ex=68620940&is=6860b7c0&hm=b073e40035eba5af5afb64dcfb25da32a80fe637aaee98d177e41892684e71c5&)
+
+# Wildcard – NixOS
+
+I came across NixOS in a Fireship video — where he showed how you can roll back your entire system to a previous state with just one command. You can even keep multiple setups and switch between them.
+
+ *"Wow, that’s exactly what I want."*
+
+So I installed it. This time, I actually dual-booted it with Windows (learning from my previous mistakes).
+
+...and I was back to Ubuntu in a day 😭
+
+Turns out, I was having trouble installing even the most basic apps. Not gonna lie — **no hate to NixOS**, it’s just **not my thing** (at least not right now).
+
+But i'll be back with NixOS very soon. 
+
+# Last but not the Least — Arch
+
+At last, I settled on **Arch Linux**. Used `archinstall` (yes, I’m gay).
+
+Logged in for the first time…
+
+**...boom.**  
+Nothing special — it was all the same, because I was still using **GNOME** as my window manager.
+
+Then I stumbled upon some tutorials by **TypeCraft** and others.
+
+> *“How to make this super crazy-looking Arch setup using Hyprland.”*
+
+Sounded cool. Looked even cooler.
+
+### What is Hyprland and How It's Different
+
+**GPT says:**
+
+> Hyprland is a dynamic, tiling Wayland compositor designed for modern desktop environments. It focuses on providing a smooth, visually appealing, and highly customizable experience.
+
+In simpler words: **Hyprland is a window manager**, just like GNOME or KDE — *but* it's a **tiling** one.
+
+#### What’s the Difference?
+
+In a traditional desktop (GNOME, KDE, Windows, macOS), when you open a window, it **floats** in the middle of the screen. When you open another window, it floats too — maybe above or behind the first one.
+
+Like this:
+
+![Floating windows](https://i.ytimg.com/vi/h6hE9_9OlQo/maxresdefault.jpg)
+
+Hyprland takes a different approach:  
+It **tiles** the windows side by side, arranging them like puzzle pieces — automatically.
+
+This makes the experience **super keyboard-friendly** — you can switch between apps, resize them, or move them around **without touching your mouse**.
+
+Why?
+
+> I have no idea.  
+> It just looks cool to me.
+
+![Not my setup btw](https://blog.blackpiratex.com/img/hyprland.jpg)
+
+### First Impression of Hyprland
+
+**Ugly.**
+
+First of all, it took me approximately a **million years** to set it up properly. And when it finally opened, I was greeted with a big, black **Kitty terminal** taking up the entire screen — with fonts so small I felt like I needed a microscope.
+
+No bar.  
+No wallpaper.  
+No app launcher.  
+Just me and the void.
+
+And the worst part? I had no idea how to open anything.  
+No right-click menu, No icons. Just the terminal.
+
+---
+
+After some more digging (copying configs from Typecraft's dotfiles), I finally started getting things working — one little piece at a time:
+- Got a bar (`waybar`)
+- Set up a wallpaper (`hyprpaper`)
+- Added a launcher (`wofi`)
+- fixed the font sizes
+
+Eventually…  
+**It started to look like a real setup.**
+
+Not just a setup — **my** (copied one but ok) setup.
+
+### Rabbit Hole of Ricing
+
+**Google says:**
+
+> The term ‘rice’ is used to describe a person’s Unix desktop, where ‘ricing’ refers to customizing the look and feel — like icons, panels, or the system interface.  
+> When it comes to ricing a tiling window manager, though, the process becomes way more involved. Basic things like the panel bar and application launcher must be configured manually by the user.
+
+After getting better at writing these config files, I felt **the power in my hands** — the power to create or destroy universes.
+
+> **"I am inevitable."**  
+> *\*snaps\**
+
+Every time I opened my laptop to get some work done, I'd find **something** off in the setup:
+- The border's too thick.
+- The wallpaper doesn’t match the color scheme.
+- This font doesn't feel right today. 
+
+And the first thing I’d do  
+**Open the config files.**
+
+Spend the next hour tweaking something *tiny*.  
+Something so minor that literally **nobody else on Earth** would ever notice.
+
+Just a little better. A little more.
+
+And then I’d finally start the task I was originally supposed to do. Maybe.
+
+> i would recommend using someone else's complete config with some tweaks, but don't waste too much time on fixing the already fixed stuff
+
+### Finally, Inner Peace 
+
+Eventually, I stopped nit-picking.
+
+I finally settled on a **Catppuccin-based Hyprland config** that felt *just right*.  
+It looked good. It worked flawlessly. And most importantly — it felt mine.
+
+---
+
+### Here's What My Current Setup Uses:
+
+> **Hyprland** — obviously.  
+> **Hyprpanel** — not Waybar; I found Hyprpanel better for my layout and use case.  
+> **Wofi** — app launcher.  
+> **Hyprpaper** — handles wallpapers.  
+> **Hyprlock** — lock screen.  
+> **Hyprshot** — for screenshots.
+
+---
+
+After all the distro hopping, broken installs, accidental nukes, and hours wasted ricing…  
+**this setup feels like home.**
+
+And that’s what Linux is all about — turning your computer into something that’s completely, unapologetically *you*.
+
+### Would I Recommend Hyprland?
+
+Absolutely — **but with a catch**.
+
+If you're new to tiling window managers or Hyprland, my advice is:
+
+> **Start with someone else’s complete config.**  
+> Tweak it a little. Make it your own.  
+> But don’t waste hours fixing things that already work.
+
+The goal is to enjoy the setup — not get stuck in an infinite loop of BS.
+
+---
+
+## My dotfiles
+
+Now the most interesting part - my dotfiles
+
+You can check out the full config here - [Aurora](https://github.com/07calc/aurora)
+
+Yes i like to name my stuff, and i named this setup aurora, idk why.
+
+<BlogFooter />
