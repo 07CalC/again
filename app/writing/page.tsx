@@ -2,6 +2,9 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import { Calendar, ArrowRight } from "lucide-react";
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default function WritingPage() {
   const posts = getAllPosts();
 

@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { compileMDX, MDXRemote } from "next-mdx-remote/rsc";
 import { MDXComponents } from "@/components/MDXComponents";
 import rehypeHighlight from "rehype-highlight";
 import { Calendar, ArrowLeft } from "lucide-react";
+import BlogFooter from "@/content/BlogFooter";
+
+export const dynamic = "force-static"; 1
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -14,6 +18,16 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
+  const { content } = await compileMDX({
+    source: post?.content || "",
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        rehypePlugins: [rehypeHighlight],
+      }
+    },
+    components: MDXComponents
+  })
   if (!post) notFound();
 
   return (
@@ -58,15 +72,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
 
         <article className="rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-black/20 p-4 sm:p-8 backdrop-blur-xl overflow-x-auto">
-          <MDXRemote
-            source={post.content}
-            components={MDXComponents}
-            options={{
-              mdxOptions: {
-                rehypePlugins: [rehypeHighlight],
-              },
-            }}
-          />
+          {content}
         </article>
       </div>
     </div>

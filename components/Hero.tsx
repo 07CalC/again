@@ -1,12 +1,15 @@
-import { db } from "@/db";
+import { getAsyncDB } from "@/db";
 import Socials from "./Social";
 
+export const dynamic = "force-dynamic";
+
 export default async function Hero() {
+  const db = await getAsyncDB();
   const thought =
-    (await db.query.thoughts.findFirst({
+    await db.query.thoughts.findFirst({
       orderBy: (thoughts, { desc }) =>
         desc(thoughts.createdAt),
-    })) || {
+    }) || {
       content: "The less I know, the better.",
       createdAt: new Date().toISOString(),
     };

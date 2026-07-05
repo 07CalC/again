@@ -4,7 +4,9 @@ import Heatmap from "@/components/Heatmap";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import WritingsSection from "@/components/sections/WritingsSection";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
   return (
     <main className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 pt-20 flex flex-col font-sans">
       <div className="flex flex-col lg:flex-row justify-between items-center gap-12">
