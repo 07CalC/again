@@ -37,7 +37,10 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
+  transition: background 0.4s ease;
 }
+
+
 
 .dark body {
   background:

@@ -13,7 +13,6 @@ const links = [
   { href: "/writing", label: "writing" },
   { href: "/shelf", label: "shelf" },
   { href: "/now", label: "now" },
-  { href: "/about", label: "about" },
 ];
 
 export default function Navbar() {
@@ -45,9 +44,8 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-4 left-0 right-0 z-50 mx-auto w-full max-w-[1200px] px-4 transition-all duration-300 ${
-          hidden ? "-translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100"
-        }`}
+        className={`fixed top-4 left-0 right-0 z-50 mx-auto w-full max-w-[1200px] px-4 transition-all duration-300 ${hidden ? "-translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100"
+          }`}
       >
         <div className="flex items-center justify-between rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/50 dark:bg-black/30 px-4 sm:px-6 py-3 backdrop-blur-xl shadow-lg">
           <Link href="/" className="shrink-0">
@@ -67,11 +65,10 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`transition-colors relative ${
-                    isActive
-                      ? "text-blue-500 dark:text-blue-400"
-                      : "hover:text-gray-900 dark:hover:text-gray-200"
-                  }`}
+                  className={`transition-colors relative ${isActive
+                    ? "text-blue-500 dark:text-blue-400"
+                    : "hover:text-gray-900 dark:hover:text-gray-200"
+                    }`}
                 >
                   {link.label}
                   {isActive && (
@@ -102,17 +99,15 @@ export default function Navbar() {
 
       {/* Side drawer overlay */}
       <div
-        className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${
-          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
         onClick={() => setMenuOpen(false)}
       >
         <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
 
         <div
-          className={`absolute top-0 right-0 h-full w-64 overflow-y-auto border-l border-gray-200/60 dark:border-white/10 bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-out ${
-            menuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`absolute top-0 right-0 h-full w-64 overflow-y-auto border-l border-gray-200/60 dark:border-white/10 bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-end p-4">
@@ -133,11 +128,10 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`transition-colors rounded-lg px-3 py-2 ${
-                    isActive
-                      ? "text-blue-500 dark:text-blue-400 font-medium bg-blue-500/10"
-                      : "hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5"
-                  }`}
+                  className={`transition-colors rounded-lg px-3 py-2 ${isActive
+                    ? "text-blue-500 dark:text-blue-400 font-medium bg-blue-500/10"
+                    : "hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5"
+                    }`}
                 >
                   {link.label}
                 </Link>

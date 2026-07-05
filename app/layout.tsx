@@ -47,7 +47,7 @@ export default function RootLayout({
           <div className="bg-blur" />
           <Navbar />
           <div className="flex-1 pt-20">
-          {children}
+            {children}
           </div>
           <Footer />
         </ThemeProvider>
