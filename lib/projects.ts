@@ -16,6 +16,15 @@ It enables teams to manage team inboxes and send application emails without deal
     status: "V2 in development"
   },
   {
+    title: "Crux",
+    description: `A web platform that provides previous years' opening and closing ranks for various colleges under JoSAA and CSAB,
+  helping students make informed decisions during counseling.`,
+    image: "https://crux.vinm.me/og.png",
+    github: "https://github.com/07calc/crux",
+    demo: "https://crux.vinm.me/",
+    status: "Maintained"
+  },
+  {
     title: "Fyrer",
     description: `A lightweight CLI tool for running multiple development servers concurrently, with plans to evolve into a full-fledged monorepo toolkit.`,
     image: "/fyrer.png",
@@ -28,15 +37,6 @@ It enables teams to manage team inboxes and send application emails without deal
     description: `A comprehensive Rust email toolkit providing everything needed to build email applications—from SMTP servers and clients to MIME parsing, RFC 5322 message generation, and raw email processing—all in one crate.`,
     github: "https://github.com/07calc/meowlman",
     status: "In development"
-  },
-  {
-    title: "Crux",
-    description: `A web platform that provides previous years' opening and closing ranks for various colleges under JoSAA and CSAB,
-  helping students make informed decisions during counseling.`,
-    image: "/crux.png",
-    github: "https://github.com/07calc/crux",
-    demo: "https://crux.vinm.me/",
-    status: "Maintained"
   },
   {
     title: "Cook.nvim",

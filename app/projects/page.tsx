@@ -37,7 +37,13 @@ export default function ProjectsPage() {
                   <h2 className="text-base font-medium text-gray-900 dark:text-gray-200 leading-snug">
                     {project.title}
                   </h2>
-                  <span className="shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-full bg-gray-200/60 dark:bg-white/5 text-gray-500 dark:text-gray-500">
+                  <span className={
+                      "shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-full " + (
+                        project.status === "Maintained" ? "bg-emerald-100/60 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300" :
+                        project.status === "Abandoned" ? "bg-red-100/60 dark:bg-red-900/30 text-red-600 dark:text-red-300" :
+                        "bg-blue-100/60 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300"
+                      )
+                    }>
                     {project.status}
                   </span>
                 </div>
@@ -53,10 +59,10 @@ export default function ProjectsPage() {
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-xs font-mono text-blue-500 dark:text-blue-400 hover:underline"
+                    className="flex items-center gap-1.5 text-sm font-mono text-blue-500 dark:text-blue-400 hover:underline"
                   >
-                    <ExternalLink size={12} />
-                    demo
+                    <ExternalLink size={14} />
+                    visit
                   </Link>
                 )}
                 {project.github && (
@@ -64,9 +70,9 @@ export default function ProjectsPage() {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 text-xs font-mono text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+                    className="flex items-center gap-1.5 text-sm font-mono text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
                   >
-                    <GitBranch size={12} />
+                    <GitBranch size={14} />
                     source
                   </Link>
                 )}
