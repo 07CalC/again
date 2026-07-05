@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import NowPlaying from "@/components/NowPlaying";
+import Heatmap from "@/components/Heatmap";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import WritingsSection from "@/components/sections/WritingsSection";
 
@@ -21,7 +22,9 @@ export default function Home() {
       <div className="mt-32">
         <ProjectsSection limit={3} />
       </div>
-
+      <div className="mt-32">
+        <Heatmap />
+      </div>
     </main>
   );
 }
