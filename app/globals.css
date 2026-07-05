@@ -34,6 +34,8 @@ body {
       #e2e8f0 50%,
       #cbd5e1 100%
     );
+  background-attachment: fixed;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
@@ -45,6 +47,7 @@ body {
       #020617 50%,
       #000 100%
     );
+  background-attachment: fixed;
 }
 
 .starfield {

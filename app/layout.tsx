@@ -45,7 +45,9 @@ export default function RootLayout({
           </div>
           <div className="bg-blur" />
           <Navbar />
+          <div className="pt-20">
           {children}
+          </div>
         </ThemeProvider>
       </body>
     </html>

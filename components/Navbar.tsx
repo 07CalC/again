@@ -3,7 +3,7 @@
 import { Moon, Sun, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
@@ -19,11 +19,36 @@ const links = [
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 20) {
+        setHidden(false);
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 60) {
+        setHidden(true);
+      } else if (currentScrollY < lastScrollY.current) {
+        setHidden(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <nav className="sticky top-4 z-50 mx-auto w-full max-w-[1200px] px-4">
+      <nav
+        className={`fixed top-4 left-0 right-0 z-50 mx-auto w-full max-w-[1200px] px-4 transition-all duration-300 ${
+          hidden ? "-translate-y-[calc(100%+2rem)] opacity-0" : "translate-y-0 opacity-100"
+        }`}
+      >
         <div className="flex items-center justify-between rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/50 dark:bg-black/30 px-4 sm:px-6 py-3 backdrop-blur-xl shadow-lg">
           <Link href="/" className="shrink-0">
             <Image
