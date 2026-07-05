@@ -101,61 +101,63 @@ export default function Navbar() {
       </nav>
 
       {/* Side drawer overlay */}
-      {menuOpen && (
+      <div
+        className={`fixed inset-0 z-50 md:hidden transition-all duration-300 ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMenuOpen(false)}
+      >
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+
         <div
-          className="fixed inset-0 z-50 md:hidden"
-          onClick={() => setMenuOpen(false)}
+          className={`absolute top-0 right-0 h-full w-64 overflow-y-auto border-l border-gray-200/60 dark:border-white/10 bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-2xl transition-transform duration-300 ease-out ${
+            menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+          <div className="flex items-center justify-end p-4">
+            <button
+              aria-label="Close menu"
+              className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          </div>
 
-          <div
-            className="absolute top-0 right-0 h-full w-64 overflow-y-auto border-l border-gray-200/60 dark:border-white/10 bg-white/80 dark:bg-black/80 backdrop-blur-xl shadow-2xl translate-x-0"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-end p-4">
-              <button
-                aria-label="Close menu"
-                className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-                onClick={() => setMenuOpen(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
+          <div className="flex flex-col gap-2 px-4 text-sm text-gray-500 dark:text-gray-400">
+            {links.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`transition-colors rounded-lg px-3 py-2 ${
+                    isActive
+                      ? "text-blue-500 dark:text-blue-400 font-medium bg-blue-500/10"
+                      : "hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
 
-            <div className="flex flex-col gap-2 px-4 text-sm text-gray-500 dark:text-gray-400">
-              {links.map((link) => {
-                const isActive = pathname === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMenuOpen(false)}
-                    className={`transition-colors rounded-lg px-3 py-2 ${
-                      isActive
-                        ? "text-blue-500 dark:text-blue-400 font-medium bg-blue-500/10"
-                        : "hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
+            <hr className="my-2 border-gray-200 dark:border-white/10" />
 
-              <hr className="my-2 border-gray-200 dark:border-white/10" />
-
-              <button
-                aria-label="Toggle theme"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5 transition-colors"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                <Sun size={16} className="hidden dark:block" />
-                <Moon size={16} className="dark:hidden" />
-                <span className="capitalize">{theme === "dark" ? "light" : "dark"} mode</span>
-              </button>
-            </div>
+            <button
+              aria-label="Toggle theme"
+              className="flex items-center gap-3 rounded-lg px-3 py-2 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-200/50 dark:hover:bg-white/5 transition-colors"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Sun size={16} className="hidden dark:block" />
+              <Moon size={16} className="dark:hidden" />
+              <span className="capitalize">{theme === "dark" ? "light" : "dark"} mode</span>
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </>
   );
 }
