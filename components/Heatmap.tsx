@@ -35,7 +35,7 @@ export default async function Heatmap() {
       "https://github-contributions-api.jogruber.de/v4/07calc?y=last",
       { next: { revalidate: 3600 } }
     );
-    const data = await res.json();
+    const data: any = await res.json();
     const contributions: Contribution[] = data.contributions;
 
     for (let i = 0; i < contributions.length; i += 7) {
@@ -54,14 +54,14 @@ export default async function Heatmap() {
           Contributions
         </h2>
         <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-          someone&apos;s been busy
+          Someone&apos;s been busy
         </p>
       </div>
 
       <div className="rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] p-5 md:p-6 backdrop-blur-xl">
         <div className="overflow-x-auto no-scrollbar">
           <div className="min-w-fit">
-              <div className="flex gap-[4px] sm:gap-1 ml-[34px] sm:ml-9 mb-2 text-[11px] font-mono text-gray-500 dark:text-gray-500">
+            <div className="flex gap-[4px] sm:gap-1 ml-[34px] sm:ml-9 mb-2 text-[11px] font-mono text-gray-500 dark:text-gray-500">
               {monthLabels.map((label, i) => (
                 <div key={i} className="w-[clamp(14px,3vw,16px)] text-center">
                   {label}
@@ -80,10 +80,10 @@ export default async function Heatmap() {
                         title={
                           day
                             ? `${day.count} contribution${day.count !== 1 ? "s" : ""} on ${new Date(day.date).toLocaleDateString("en-IN", {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              })}`
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}`
                             : undefined
                         }
                         className={`rounded-[4px] sm:rounded-[3px] w-[clamp(14px,3vw,16px)] h-[clamp(14px,3vw,16px)] ${day ? levelColors[day.level] : "bg-transparent"}`}
