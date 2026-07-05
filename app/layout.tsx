@@ -11,12 +11,59 @@ const ibmPlexSans = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vinm.me"),
   title: "Vinayak Maheshwari | CalC",
   description: "Who am i without my silliness? A CalC.",
   icons: {
     icon: '/capy.png',
     shortcut: '/capy.png',
     apple: '/capy.png',
+  },
+  openGraph: {
+    title: "Vinayak Maheshwari | CalC",
+    description: "Who am i without my silliness? A CalC.",
+    url: "https://vinm.me",
+    siteName: "Vinayak Maheshwari | CalC",
+    images: [
+      {
+        url: "/og.png",
+        width: 622,
+        height: 254,
+      },
+    ],
+    locale: "en-US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vinayak Maheshwari | CalC",
+    description: "Who am i without my silliness? A CalC.",
+    images: ["/og.png"],
+  },
+  authors: [
+    {
+      name: "Vinayak Maheshwari",
+      url: "https://vinm.me",
+    },
+  ],
+  keywords: [
+    "Vinayak Maheshwari",
+    "CalC",
+    "vinm",
+    "vinm.me",
+    "vinayak maheshwari",
+    "vinayak",
+    "maheshwari",
+    "developer",
+    "software engineer",
+    "full stack developer",
+    "frontend developer",
+    "backend developer",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
   },
 };
 
