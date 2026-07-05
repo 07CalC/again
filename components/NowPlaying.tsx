@@ -168,7 +168,7 @@ export default async function NowPlaying() {
 
         <div
           className={`
-            absolute right-[14px] top-[22px] sm:right-[20px] sm:top-[28px]
+            absolute right-[3px] top-[22px] sm:right-[5px] sm:top-[28px]
             h-[120px] w-[6px] sm:h-[140px] sm:w-[7px] md:h-[170px] md:w-[8px]
             origin-top rounded-full
             bg-gradient-to-b
