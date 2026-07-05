@@ -1,54 +1,242 @@
-import { PlayCircle } from "lucide-react";
+import {
+  CurrentlyPlayingResponse,
+  getSpotifyToken,
+  RecentlyPlayedResponse,
+  Track,
+} from "@/lib/spotify";
+import Link from "next/link";
 
-export default function NowPlaying() {
+export default async function NowPlaying() {
+  const accessToken = await getSpotifyToken();
+
+  let track: Track | null = null;
+  let isPlaying = false;
+  let progress = 0;
+
+  const currentRes = await fetch(
+    "https://api.spotify.com/v1/me/player/currently-playing?market=IN",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (currentRes.status === 200) {
+    const data: CurrentlyPlayingResponse =
+      await currentRes.json();
+
+    if (data?.item) {
+      track = data.item;
+      isPlaying = data.is_playing;
+
+      if (isPlaying) {
+        const progressMs = data.progress_ms ?? 0;
+        const durationMs = data.item.duration_ms;
+
+        progress =
+          (progressMs / durationMs) * 100;
+
+      }
+    }
+  }
+
+  if (!track) {
+    const recentRes = await fetch(
+      "https://api.spotify.com/v1/me/player/recently-played?limit=1",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (recentRes.status === 200) {
+      const recentData: RecentlyPlayedResponse =
+        await recentRes.json();
+
+      track =
+        recentData.items?.[0]?.track ?? null;
+
+      if (track) {
+      }
+    }
+  }
+
+  if (!track) {
+    return null;
+  }
+
+  const albumArt =
+    track.album.images?.[0]?.url;
+
   return (
-    <div className="bg-[#0f1115] border border-white/5 rounded-2xl p-6 w-72 flex flex-col items-center justify-between shadow-2xl relative overflow-hidden group">
-      
-      {/* Decorative background glow */}
-      <div className="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
+    <Link
+      href={track.external_urls.spotify}
+      target="_blank"
+      className="
+        group
+        relative
+        block
+        w-[360px]
+        rounded-[32px]
+        border border-white/10
+        bg-black/20
+        p-8
+        backdrop-blur-xl
+        transition
+        hover:border-white/20
+      "
+    >
+      <div
+        className="
+          absolute inset-0 rounded-[32px]
+          bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.08),transparent_65%)]
+        "
+      />
 
-      {/* Record Graphic */}
-      <div className="relative w-48 h-48 mb-8 flex items-center justify-center">
-        {/* Vinyl outer */}
-        <div className="w-48 h-48 rounded-full bg-[#111] shadow-xl border border-white/10 flex items-center justify-center animate-[spin_4s_linear_infinite]">
-          {/* Vinyl inner grooves */}
-          <div className="w-40 h-40 rounded-full border border-white/5 flex items-center justify-center">
-            <div className="w-32 h-32 rounded-full border border-white/5 flex items-center justify-center">
-              {/* Record Label - Pink Floyd Triangle placeholder */}
-              <div className="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center overflow-hidden">
-                 <div className="w-8 h-8 border-[1px] border-white/40 transform rotate-45"></div>
-              </div>
-            </div>
+      {/* VINYL */}
+      <div className="relative mx-auto h-[280px] w-[280px]">
+        <div className="absolute inset-0 rounded-full bg-black shadow-[0_30px_80px_rgba(0,0,0,0.7)]" />
+
+        <div
+          className={`
+            absolute inset-0 overflow-hidden rounded-full bg-black
+            shadow-[inset_0_0_50px_rgba(255,255,255,0.04)]
+            ${isPlaying ? "animate-spin-slow" : ""}
+          `}
+        >
+          {/* grooves */}
+          <div
+            className="
+              absolute inset-0 rounded-full
+              bg-[repeating-radial-gradient(circle_at_center,#050505_0px,#050505_2px,#0d0d0d_3px,#050505_4px)]
+            "
+          />
+
+          {/* highlight */}
+          <div
+            className="
+              absolute inset-0 rounded-full
+              bg-[conic-gradient(from_40deg,transparent,rgba(255,255,255,0.18),transparent_35%)]
+            "
+          />
+
+          {/* album art */}
+          <div
+            className="
+              absolute left-1/2 top-1/2
+              h-30 w-30
+              -translate-x-1/2 -translate-y-1/2
+              overflow-hidden
+              rounded-full
+              border border-white/10
+              bg-black
+              shadow-xl
+            "
+          >
+            <img
+              src={albumArt}
+              alt={track.name}
+              sizes="150px"
+              className="object-cover"
+            />
+
+            {/* {/* spindle */}
+            {/* <div */}
+            {/*   className=" */}
+            {/*     absolute left-1/2 top-1/2 */}
+            {/*     h-3 w-3 */}
+            {/*     -translate-x-1/2 -translate-y-1/2 */}
+            {/*     rounded-full bg-zinc-300 */}
+            {/*     shadow */}
+            {/*   " */}
+            {/* /> */}
           </div>
         </div>
 
-        {/* Tonearm */}
-        <div className="absolute -top-4 right-2 w-2 h-24 bg-zinc-400 rounded-full transform rotate-[30deg] origin-top flex flex-col items-center shadow-lg">
-          <div className="w-6 h-6 rounded-full bg-zinc-300 absolute -top-2 shadow-inner border border-zinc-400"></div>
-          <div className="w-3 h-8 bg-zinc-500 rounded-sm absolute bottom-0 transform rotate-[15deg] translate-x-1 border border-zinc-600"></div>
+        {/* base */}
+        <div
+          className="
+            absolute right-[-5] top-0
+            flex h-14 w-14 items-center justify-center
+            rounded-full bg-zinc-900 shadow-xl
+          "
+        >
+          <div
+            className="
+              h-8 w-8 rounded-full
+              bg-gradient-to-b
+              from-zinc-100 to-zinc-400
+            "
+          />
+        </div>
+
+        <div
+          className={`
+            absolute right-[20px] top-[28px]
+            h-[170px] w-[8px]
+            origin-top rounded-full
+            bg-gradient-to-b
+            from-zinc-100 via-zinc-300 to-zinc-600
+            shadow-lg
+            transition-transform duration-700 ease-in-out
+            ${isPlaying
+              ? "rotate-[15deg]"
+              : "rotate-[-10deg]"
+            }
+          `}
+        >
+          <div
+            className="
+              absolute bottom-[-12px] left-1/2
+              h-7 w-10
+              -translate-x-1/2
+              rotate-[10deg]
+              rounded-md bg-zinc-800 shadow-xl
+            "
+          >
+            <div className="absolute bottom-1 left-2 h-2 w-[2px] bg-zinc-400" />
+            <div className="absolute bottom-1 left-5 h-2 w-[2px] bg-zinc-400" />
+          </div>
         </div>
       </div>
 
-      <div className="w-full text-left space-y-1">
-        <div className="flex items-center gap-2 text-[10px] font-mono text-green-400 tracking-wider mb-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-          NOW PLAYING
+      <div className="mt-8">
+        <div className="mb-3 flex items-center gap-2">
+          <span
+            className={`h-2 w-2 rounded-full ${isPlaying
+              ? "bg-green-400 animate-pulse"
+              : "bg-zinc-500"
+              }`}
+          />
+
+          <span
+            className={`font-mono text-[11px] tracking-widest ${isPlaying
+              ? "text-green-400"
+              : "text-zinc-500"
+              }`}
+          >
+            {isPlaying
+              ? "NOW PLAYING"
+              : "LAST PLAYED"}
+          </span>
         </div>
-        <h3 className="text-white font-medium">Time</h3>
-        <p className="text-xs text-gray-500">Pink Floyd</p>
+
+        <h3 className="text-3xl font-medium text-white">
+          {track.name}
+        </h3>
+
+        <p className="mt-2 text-lg text-zinc-400">
+          {track.artists
+            .map((a) => a.name)
+            .join(", ")}
+        </p>
       </div>
 
-      {/* Progress bar */}
-      <div className="w-full mt-4">
-        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-          <div className="w-1/4 h-full bg-gray-300 rounded-full"></div>
-        </div>
-        <div className="flex justify-between w-full mt-2 text-[10px] font-mono text-gray-500">
-          <span>1:23</span>
-          <span>6:53</span>
-        </div>
-      </div>
-
-    </div>
+    </Link>
   );
 }
+

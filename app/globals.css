@@ -579,3 +579,13 @@ body {
 
   background: rgba(2, 6, 23, 0.08);
 }
+
+@theme {
+  --animate-spin-slow: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
@@ -14,7 +15,13 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between py-8">
       <Link href="/" className="text-xl font-medium tracking-tighter text-gray-800 dark:text-gray-200 hover:text-black dark:hover:text-white transition-colors">
-        &gt;_
+        <Image
+          src={"/capy.png"}
+          alt="Vinayak Maheshwari"
+          width={32}
+          height={32}
+          className="rounded-full"
+        />
       </Link>
       <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-gray-400">
         <Link href="/" className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors relative">
@@ -26,8 +33,8 @@ export default function Navbar() {
         <Link href="/shelf" className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors">shelf</Link>
         <Link href="/now" className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors">now</Link>
         <Link href="/about" className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors">about</Link>
-        <button 
-          aria-label="Toggle theme" 
+        <button
+          aria-label="Toggle theme"
           className="hover:text-gray-900 dark:hover:text-gray-200 transition-colors ml-4"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         >

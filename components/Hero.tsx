@@ -1,54 +1,120 @@
-import Link from "next/link";
+import { db } from "@/db";
+import Socials from "./Social";
 
-export default function Hero() {
+export default async function Hero() {
+  const thought =
+    (await db.query.thoughts.findFirst({
+      orderBy: (thoughts, { desc }) =>
+        desc(thoughts.createdAt),
+    })) || {
+      content: "The less I know, the better.",
+      createdAt: new Date().toISOString(),
+    };
   return (
-    <section className="flex flex-col gap-8 pt-12 pb-8">
-      <h1 className="text-5xl md:text-[3.5rem] font-serif font-normal tracking-tight text-gray-900 dark:text-[#f3f4f6]">
-        Vinayak Maheshwari.
-      </h1>
+    <section className="flex flex-col gap-10 pt-20 pb-16">
+      <div className="space-y-6">
+        <h1
+          className="
+            text-5xl
+            md:text-7xl
+            font-serif
+            font-normal
+            tracking-tight
+            text-gray-100
+          "
+        >
+          Vinayak Maheshwari.
+        </h1>
 
-      <div className="flex flex-col gap-5 text-gray-600 dark:text-[#9ca3af] font-mono text-sm max-w-lg">
-        <p>builder, student, linux enthusiast.</p>
-        <p className="leading-relaxed">
-          I build things on the internet and<br />
-          occasionally break production.
-        </p>
+        <div
+          className="
+            max-w-2xl
+            space-y-5
+            font-mono
+            text-sm
+            leading-7
+            text-gray-400
+          "
+        >
+          <p className="text-zinc-300 text-lg">
+            Who am i witout my silliness? A calc.
+          </p>
+
+
+        </div>
       </div>
 
-      <div className="flex items-center gap-6 mt-4 text-gray-400">
-        <Link href="https://github.com" target="_blank" className="hover:text-gray-900 dark:hover:text-white transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-          </svg>
-        </Link>
-        <Link href="https://twitter.com" target="_blank" className="hover:text-white transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-          </svg>
-        </Link>
-        <Link href="https://linkedin.com" target="_blank" className="hover:text-white transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect x="2" y="9" width="4" height="12"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
-        </Link>
-        <Link href="mailto:hello@example.com" className="hover:text-white transition-colors">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-          </svg>
-        </Link>
-        <Link href="#" className="hover:text-white transition-colors">
-          {/* Fallback for spotify icon */}
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M8 11.973c2.5-1.473 5.5-.973 7.5.527"></path>
-            <path d="M9 15c1.5-1 4-1 5 .5"></path>
-            <path d="M7 9c3-2 6-2 9 0"></path>
-          </svg>
-        </Link>
+      {/* Thought Card */}
+      <div
+        className="
+          relative
+          w-fit
+          max-w-2xl
+          overflow-hidden
+          rounded-3xl
+          border border-white/10
+          bg-black/20
+          px-6
+          py-5
+          backdrop-blur-xl
+          shadow-[0_8px_32px_rgba(0,0,0,0.3)]
+        "
+      >
+        <div
+          className="
+            absolute inset-0
+            bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_70%)]
+          "
+        />
+
+        <div className="relative flex gap-4">
+          <div
+            className="
+              text-blue-400
+              font-serif
+              text-5xl
+              leading-none
+              -mt-1
+            "
+          >
+            &ldquo;
+          </div>
+
+          <div className="space-y-2">
+            <p
+              className="
+                text-sm
+                font-medium
+                text-zinc-200
+              "
+            >
+              {thought.content}
+            </p>
+
+            <p
+              className="
+                text-xs
+                font-mono
+                text-zinc-400
+              "
+            >
+              Random though from{" "}
+              <span className="text-blue-400">
+                {new Date(
+                  thought.createdAt!
+                ).toLocaleDateString(
+                  "en-IN",
+                  {
+                    dateStyle: "full",
+                  }
+                )}
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
+
+      <Socials />
     </section>
   );
 }
