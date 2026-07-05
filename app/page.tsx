@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import NowPlaying from "@/components/NowPlaying";
 import CurrentStatus from "@/components/CurrentStatus";
@@ -6,8 +5,7 @@ import FeaturedProjects from "@/components/FeaturedProjects";
 import RecentWriting from "@/components/RecentWriting";
 export default function Home() {
   return (
-    <main className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 flex flex-col font-sans">
-      <Navbar />
+    <main className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 pt-20 flex flex-col font-sans">
       <div className="flex flex-col lg:flex-row justify-between items-center gap-12">
         <div className="lg:w-1/2 flex items-center justify-start">
           <Hero />

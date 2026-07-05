@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { IBM_Plex_Sans } from "next/font/google"
+import Navbar from "@/components/Navbar";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -32,17 +33,18 @@ export default function RootLayout({
       className={`h-full ${ibmPlexSans.variable} font-sans`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-white dark:bg-black transition-colors duration-300">
+      <body className="min-h-full flex flex-col transition-colors duration-300">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="starfield dark:opacity-100 opacity-40">
+          <div className="starfield">
             <div className="stars-large" />
           </div>
           <div className="bg-blur" />
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>
