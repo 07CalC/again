@@ -7,6 +7,8 @@
     "dev": "next dev",
     "start": "next start",
     "lint": "eslint",
+    "db:migrate": "drizzle-kit generate && wrangler d1 migrations apply DB --remote",
+    "db:migrate:dev": "drizzle-kit generate && wrangler d1 migrations apply DB --local",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
@@ -14,6 +16,8 @@
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.1",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
     "lucide-react": "^1.23.0",
     "next": "16.2.10",
     "next-themes": "^0.4.6",

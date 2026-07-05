@@ -5,8 +5,11 @@ import CurrentStatus from "@/components/CurrentStatus";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import RecentWriting from "@/components/RecentWriting";
 import FooterQuote from "@/components/FooterQuote";
+import { db } from "@/db";
 
-export default function Home() {
+export default async function Home() {
+  const some = await db.query.thoughts.findMany();
+  console.log("some", some);
   return (
     <main className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 flex flex-col font-sans">
       <Navbar />

@@ -23,5 +23,12 @@
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
 		"binding": "IMAGES"
-	}
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "me",
+			"database_id": "6f2dad49-3afa-449f-a03b-88fc84778d1c"
+		}
+	]
 }
