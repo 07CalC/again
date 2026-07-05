@@ -39,7 +39,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="starfield dark:opacity-100 opacity-20">
+          <div className="starfield dark:opacity-100 opacity-40">
             <div className="stars-large" />
           </div>
           <div className="bg-blur" />

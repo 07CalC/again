@@ -39,7 +39,11 @@ body {
   pointer-events: none;
   z-index: -1;
   overflow: hidden;
-  filter: blur(1.5px);
+  filter: blur(1.5px) invert(1);
+}
+
+.dark .starfield {
+  filter: blur(1.5px) invert(0);
 }
 
 .starfield::before,
