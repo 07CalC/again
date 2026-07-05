@@ -2,8 +2,8 @@
 
 export default function BlogFooter() {
   return (
-    <div className="mt-16 text-xl text-muted-foreground font-mono">
-      <h1 className="text-3xl font-bold mb-4 text-purple-500">
+    <div className="mt-16 text-xl text-muted-foreground --font-ibm-plex-sans">
+      <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         Thanks for reading!
       </h1>
       <p>

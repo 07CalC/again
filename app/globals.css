@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "highlight.js/styles/github-dark.css" layer(hljs);
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -15,6 +17,11 @@
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+}
+
+html {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {

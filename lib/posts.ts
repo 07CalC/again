@@ -10,7 +10,9 @@ export type PostMeta = {
   image?: string;
 };
 
-const postsDir = path.join(process.cwd(), "content", "blog");
+function postsDir() {
+  return path.join(process.cwd(), "content", "blog");
+}
 
 function parseFrontmatter(raw: string): { data: Record<string, unknown>; content: string } {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -21,13 +23,11 @@ function parseFrontmatter(raw: string): { data: Record<string, unknown>; content
   const yaml = match[1];
   const content = match[2];
 
-  // Simple YAML parser for our frontmatter fields
   const data: Record<string, unknown> = {};
   for (const line of yaml.split("\n")) {
     const kv = line.match(/^(\w+):\s*(.+)$/);
     if (kv) {
       let value: unknown = kv[2].trim();
-      // Parse arrays: ["a", "b"]
       if (typeof value === "string" && value.startsWith("[")) {
         try {
           value = JSON.parse(value.replace(/'/g, '"'));
@@ -35,7 +35,6 @@ function parseFrontmatter(raw: string): { data: Record<string, unknown>; content
           // keep as string
         }
       }
-      // Parse quoted strings
       if (typeof value === "string" && value.startsWith('"') && value.endsWith('"')) {
         value = value.slice(1, -1);
       }
@@ -50,12 +49,13 @@ function parseFrontmatter(raw: string): { data: Record<string, unknown>; content
 }
 
 export function getAllPosts(): PostMeta[] {
-  if (!fs.existsSync(postsDir)) return [];
+  const dir = postsDir();
+  if (!fs.existsSync(dir)) return [];
 
-  const files = fs.readdirSync(postsDir).filter((f) => f.endsWith(".mdx"));
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".mdx"));
 
   const posts = files.map((file) => {
-    const raw = fs.readFileSync(path.join(postsDir, file), "utf-8");
+    const raw = fs.readFileSync(path.join(dir, file), "utf-8");
     const { data } = parseFrontmatter(raw);
     return {
       slug: file.replace(/\.mdx$/, ""),
@@ -67,13 +67,21 @@ export function getAllPosts(): PostMeta[] {
     };
   });
 
-  // Sort by date descending
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export function getPostBySlug(slug: string): { meta: PostMeta; content: string } | null {
-  const filePath = path.join(postsDir, `${slug}.mdx`);
-  if (!fs.existsSync(filePath)) return null;
+  const dir = postsDir();
+  const filePath = path.join(dir, `${slug}.mdx`);
+
+  if (!fs.existsSync(filePath)) {
+    // Try case-insensitive match
+    if (!fs.existsSync(dir)) return null;
+    const files = fs.readdirSync(dir);
+    const match = files.find((f) => f.toLowerCase() === `${slug.toLowerCase()}.mdx`);
+    if (!match) return null;
+    return getPostBySlug(match.replace(/\.mdx$/, ""));
+  }
 
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data, content } = parseFrontmatter(raw);
