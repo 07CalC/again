@@ -1,10 +1,9 @@
+import { Suspense } from "react";
 import Hero from "@/components/Hero";
 import NowPlaying from "@/components/NowPlaying";
 import Heatmap from "@/components/Heatmap";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import WritingsSection from "@/components/sections/WritingsSection";
-
-export const dynamic = "force-dynamic";
 
 export default async function Home() {
   return (
@@ -14,7 +13,9 @@ export default async function Home() {
           <Hero />
         </div>
         <div className="lg:w-1/2 flex items-center justify-end">
-          <NowPlaying />
+          <Suspense>
+            <NowPlaying />
+          </Suspense>
         </div>
       </div>
 
@@ -25,7 +26,9 @@ export default async function Home() {
         <ProjectsSection limit={3} />
       </div>
       <div className="mt-32">
-        <Heatmap />
+        <Suspense>
+          <Heatmap />
+        </Suspense>
       </div>
     </main>
   );

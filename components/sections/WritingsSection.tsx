@@ -2,9 +2,6 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import { Calendar, ArrowRight } from "lucide-react";
 
-
-export const dynamic = "force-static";
-
 export default function WritingsSection({ limit }: { limit?: number }) {
   const posts = getAllPosts().slice(0, limit);
 

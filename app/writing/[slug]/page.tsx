@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
-import { compileMDX, MDXRemote } from "next-mdx-remote/rsc";
+import { compileMDX } from "next-mdx-remote/rsc";
 import { MDXComponents } from "@/components/MDXComponents";
 import rehypeHighlight from "rehype-highlight";
 import { Calendar, ArrowLeft } from "lucide-react";
-import BlogFooter from "@/content/BlogFooter";
 
-export const dynamic = "force-static"; 1
+export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
