@@ -1,7 +1,9 @@
 import { Suspense } from "react";
 import Hero from "@/components/Hero";
 import NowPlaying from "@/components/NowPlaying";
+import NowPlayingSkeleton from "@/components/NowPlayingSkeleton";
 import Heatmap from "@/components/Heatmap";
+import HeatmapSkeleton from "@/components/HeatmapSkeleton";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import WritingsSection from "@/components/sections/WritingsSection";
 
@@ -13,7 +15,7 @@ export default async function Home() {
           <Hero />
         </div>
         <div className="lg:w-1/2 flex items-center justify-end">
-          <Suspense>
+          <Suspense fallback={<NowPlayingSkeleton />}>
             <NowPlaying />
           </Suspense>
         </div>
@@ -26,7 +28,7 @@ export default async function Home() {
         <ProjectsSection limit={3} />
       </div>
       <div className="mt-32">
-        <Suspense>
+        <Suspense fallback={<HeatmapSkeleton />}>
           <Heatmap />
         </Suspense>
       </div>
