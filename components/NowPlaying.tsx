@@ -11,7 +11,6 @@ export default async function NowPlaying() {
 
   let track: Track | null = null;
   let isPlaying = false;
-  let progress = 0;
 
   const currentRes = await fetch(
     "https://api.spotify.com/v1/me/player/currently-playing?market=IN",
@@ -30,15 +29,6 @@ export default async function NowPlaying() {
     if (data?.item) {
       track = data.item;
       isPlaying = data.is_playing;
-
-      if (isPlaying) {
-        const progressMs = data.progress_ms ?? 0;
-        const durationMs = data.item.duration_ms;
-
-        progress =
-          (progressMs / durationMs) * 100;
-
-      }
     }
   }
 

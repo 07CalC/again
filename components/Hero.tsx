@@ -1,18 +1,12 @@
-import { getAsyncDB } from "@/db";
 import Socials from "./Social";
 
 export const dynamic = "force-dynamic";
 
 export default async function Hero() {
-  const db = await getAsyncDB();
-  const thought =
-    await db.query.thoughts.findFirst({
-      orderBy: (thoughts, { desc }) =>
-        desc(thoughts.createdAt),
-    }) || {
-      content: "The less I know, the better.",
-      createdAt: new Date().toISOString(),
-    };
+  const thought = {
+    content: "The less I know, the better.",
+    createdAt: new Date().toISOString(),
+  };
   return (
     <section className="flex flex-col gap-8 sm:gap-10 pt-16 sm:pt-20 pb-12 sm:pb-16">
       <div className="space-y-4 sm:space-y-6">
