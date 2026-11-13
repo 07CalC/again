@@ -1,86 +1,92 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { projects } from "@/lib/projects";
-import { ExternalLink, GitBranch } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import ProjectRow from "@/components/ProjectRow";
+import { projects, smallerThings, STATUS_META } from "@/lib/projects";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "A curated collection of things I've built: storage engines, self-hosted platforms, developer tools, and the occasional abandoned experiment.",
+};
 
 export default function ProjectsPage() {
   return (
-    <div className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 pt-8 flex flex-col">
-      <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-gray-900 dark:text-gray-100">
-            Projects
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 font-mono max-w-lg">
-            things i have built or am building
-          </p>
-        </div>
+    <main className="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+      <header className="pb-12 pt-14 sm:pb-16 sm:pt-20">
+        <p className="voice-label">/projects</p>
+        <h1 className="voice-display mt-4 text-5xl text-fg sm:text-6xl">
+          Things I&apos;ve built<span className="text-accent">.</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+          A curated shelf of software — the substantial and the small. Every
+          entry links to the real repository; the interesting ones get a page
+          of their own with the engineering decisions.
+        </p>
+        <p className="mt-4 font-mono text-xs text-faint">
+          {projects.length} projects ·{" "}
+          {Object.values(STATUS_META)
+            .map((s) => s.label)
+            .join(" / ")}
+        </p>
+      </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {projects.map((project) => (
-            <div
-              key={project.title}
-              className="group rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] p-5 backdrop-blur-xl transition-all hover:border-gray-300/80 dark:hover:border-white/20 hover:shadow-lg flex flex-col gap-3"
-            >
-              {project.image && (
-                <div className="overflow-hidden rounded-xl -mx-1 -mt-1">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-40 object-cover rounded-xl transition-transform group-hover:scale-105"
-                  />
-                </div>
-              )}
-
-              <div className="flex flex-col gap-2 flex-grow">
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="text-base font-medium text-gray-900 dark:text-gray-200 leading-snug">
-                    {project.title}
-                  </h2>
-                  <span className={
-                      "shrink-0 text-[10px] font-mono px-2 py-0.5 rounded-full " + (
-                        project.status === "Maintained" ? "bg-emerald-100/60 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300" :
-                        project.status === "Abandoned" ? "bg-red-100/60 dark:bg-red-900/30 text-red-600 dark:text-red-300" :
-                        "bg-blue-100/60 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300"
-                      )
-                    }>
-                    {project.status}
-                  </span>
-                </div>
-
-                <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-4">
-                  {project.description}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-3 mt-auto pt-1">
-                {project.demo && (
-                  <Link
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm font-mono text-blue-500 dark:text-blue-400 hover:underline"
-                  >
-                    <ExternalLink size={14} />
-                    visit
-                  </Link>
-                )}
-                {project.github && (
-                  <Link
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-sm font-mono text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
-                  >
-                    <GitBranch size={14} />
-                    source
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="divide-y divide-line border-t border-line">
+        {projects.map((project) => (
+          <ProjectRow key={project.slug} project={project} withDescription />
+        ))}
       </div>
-    </div>
+
+      {/* quieter row for the small utilities */}
+      <section className="mt-16" aria-labelledby="smaller-heading">
+        <h2 id="smaller-heading" className="voice-label">
+          Smaller things
+        </h2>
+        <ul className="mt-5 grid gap-x-10 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          {smallerThings.map((thing) => (
+            <li key={thing.name}>
+              <a
+                href={thing.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-baseline justify-between gap-3 border-b border-line py-2.5 text-sm"
+              >
+                <span className="min-w-0">
+                  <span className="text-fg transition-colors group-hover:text-accent">
+                    {thing.name}
+                  </span>
+                  <span className="ml-2 text-muted sm:ml-3">{thing.note}</span>
+                </span>
+                <ArrowUpRight
+                  size={13}
+                  strokeWidth={1.75}
+                  className="shrink-0 text-faint transition-colors group-hover:text-accent"
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-8 text-sm text-faint">
+          The rest of the graveyard lives on{" "}
+          <a
+            href="https://github.com/07calc?tab=repositories"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-quiet"
+          >
+            GitHub
+          </a>
+          .
+        </p>
+      </section>
+
+      <p className="mt-16 text-sm text-muted">
+        Curious how any of this was built? The{" "}
+        <Link href="/writing" className="link-quiet text-fg">
+          writing
+        </Link>{" "}
+        section covers the deep dives.
+      </p>
+    </main>
   );
 }

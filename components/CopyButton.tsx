@@ -1,28 +1,42 @@
-'use client';
-import { useState } from 'react';
+"use client";
 
-export function CopyButton({ text, className }: { text: any; className?: string }) {
+import { useState } from "react";
+
+/**
+ * Recursively extract plain text from React children produced by
+ * rehype-highlight (strings nested inside <span> elements).
+ */
+function extractText(node: unknown): string {
+  if (typeof node === "string") return node;
+  if (typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (
+    node &&
+    typeof node === "object" &&
+    "props" in node &&
+    (node as { props?: { children?: unknown } }).props
+  ) {
+    return extractText((node as { props: { children?: unknown } }).props.children);
+  }
+  return "";
+}
+
+export default function CopyButton({ text }: { text: unknown }) {
   const [copied, setCopied] = useState(false);
-  const copyableText = typeof text === 'string' ? text : text.map((item: any) => {
-    if (typeof item === 'string') {
-      return item;
-    } else if (typeof item === 'object' && 'props' in item && 'children' in item.props) {
-      return item.props.children;
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(extractText(text));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // clipboard unavailable — ignore
     }
-    return '';
-  }).join('');
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(copyableText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <button
-      onClick={copyToClipboard}
-      className={`px-2 py-1 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-900 rounded text-sm ${className}`}
-    >
-      {copied ? 'Copied!' : 'Copy'}
+    <button type="button" onClick={copy} className="copy-btn" aria-label="Copy code">
+      {copied ? "copied" : "copy"}
     </button>
   );
 }

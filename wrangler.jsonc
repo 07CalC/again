@@ -30,5 +30,13 @@
 			"database_name": "me",
 			"database_id": "6f2dad49-3afa-449f-a03b-88fc84778d1c"
 		}
+	],
+	"r2_buckets": [
+		{
+			// Cover/poster uploads from the admin dashboard. Create once with:
+			//   npx wrangler r2 bucket create vinm-shelf
+			"binding": "SHELF_MEDIA",
+			"bucket_name": "vinm-shelf"
+		}
 	]
 }

@@ -1,55 +1,43 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPostsDetailed } from "@/lib/posts";
 
-export default function RecentWriting() {
-  const posts = getAllPosts().slice(0, 5);
+export default function RecentWriting({ limit = 3 }: { limit?: number }) {
+  const posts = getAllPostsDetailed().slice(0, limit);
 
   return (
-    <div className="flex flex-col gap-6 w-full">
-      <h2 className="text-blue-500 dark:text-blue-400 font-mono text-sm">/ recent writing</h2>
-
-      <div className="flex flex-col gap-4">
-        {posts.map((post) => (
-          <Link
-            key={post.slug}
-            href={`/writing/${post.slug}`}
-            className="group rounded-xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] p-4 transition-all hover:border-gray-300/80 dark:hover:border-white/20"
-          >
-            <div className="flex flex-col gap-2">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-                  {post.title}
-                </h3>
-                <span className="text-[11px] font-mono text-gray-500 dark:text-gray-500 whitespace-nowrap mt-0.5 shrink-0">
-                  {new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                </span>
-              </div>
-
-              {post.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-gray-200/60 dark:bg-white/5 text-gray-500 dark:text-gray-500"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      <div className="mt-2">
+    <div>
+      {posts.map((post) => (
         <Link
-          href="/writing"
-          className="text-sm font-mono text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors flex items-center gap-1"
+          key={post.slug}
+          href={`/writing/${post.slug}`}
+          className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-3 border-t border-line py-5 first:border-t-0 first:pt-0 sm:gap-x-8 sm:py-6"
         >
-          view all writing &rarr;
+          <time
+            dateTime={post.date}
+            className="voice-meta shrink-0 pt-1"
+          >
+            {new Date(post.date).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })}
+          </time>
+          <div className="min-w-0">
+            <h3 className="min-w-0 text-[17px] font-medium text-fg transition-colors group-hover:text-accent">
+              {post.title}
+            </h3>
+            <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
+              {post.description}
+            </p>
+          </div>
+          <span className="voice-meta shrink-0 pt-1 text-faint transition-colors group-hover:text-accent">
+            {post.readingTime} min
+          </span>
         </Link>
-      </div>
+      ))}
+      <span className="sr-only">
+        <Link href="/writing">All writing</Link>
+      </span>
     </div>
   );
 }

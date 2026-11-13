@@ -5,29 +5,29 @@ interface Contribution {
 }
 
 const levelColors = [
-  "bg-gray-200/40 dark:bg-white/[0.04]",
-  "bg-gray-400/40 dark:bg-white/[0.15]",
-  "bg-gray-500/50 dark:bg-white/[0.35]",
-  "bg-gray-700/60 dark:bg-white/[0.55]",
-  "bg-gray-900/70 dark:bg-white/[0.85]",
+  "bg-line",
+  "opacity-25 bg-fg",
+  "opacity-45 bg-fg",
+  "opacity-65 bg-fg",
+  "opacity-90 bg-fg",
 ];
 
 function getMonthLabels(weeks: Contribution[][]) {
   return weeks.map((week, i) => {
     const day = week[0];
     if (!day?.date) return "";
-
     const date = new Date(day.date);
-    const month = date.toLocaleString("default", { month: "short" });
-
     const prev = weeks[i - 1]?.[0];
     if (prev && new Date(prev.date).getMonth() === date.getMonth()) return "";
-
-    return month;
+    return date.toLocaleString("en-US", { month: "short" });
   });
 }
 
-export default async function Heatmap() {
+export default async function Heatmap({
+  className = "mt-16",
+}: {
+  className?: string;
+}) {
   let weeks: Contribution[][] = [];
 
   try {
@@ -35,8 +35,8 @@ export default async function Heatmap() {
       "https://github-contributions-api.jogruber.de/v4/07calc?y=last",
       { next: { revalidate: 3600 } }
     );
-    const data: any = await res.json();
-    const contributions: Contribution[] = data.contributions;
+    const data: { contributions: Contribution[] } = await res.json();
+    const contributions = data.contributions;
 
     for (let i = 0; i < contributions.length; i += 7) {
       weeks.push(contributions.slice(i, i + 7));
@@ -46,53 +46,51 @@ export default async function Heatmap() {
   }
 
   const monthLabels = getMonthLabels(weeks);
+  const total = weeks.flat().reduce((sum, day) => sum + day.count, 0);
 
   return (
-    <section className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-gray-900 dark:text-gray-100">
-          Contributions
-        </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-          Someone&apos;s been busy
-        </p>
+    <section aria-label="GitHub contributions" className={className}>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <p className="voice-label">github · last 12 months</p>
+        <p className="voice-meta text-faint">{total.toLocaleString()} contributions</p>
       </div>
-
-      <div className="rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] p-5 md:p-6 backdrop-blur-xl">
-        <div className="overflow-x-auto no-scrollbar">
-          <div className="min-w-fit">
-            <div className="flex gap-[4px] sm:gap-1 ml-[34px] sm:ml-9 mb-2 text-[11px] font-mono text-gray-500 dark:text-gray-500">
-              {monthLabels.map((label, i) => (
-                <div key={i} className="w-[clamp(14px,3vw,16px)] text-center">
-                  {label}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-[4px] sm:gap-1">
-              {weeks.map((week, i) => (
-                <div key={i} className="flex flex-col gap-[4px] sm:gap-1">
-                  {[...Array(7)].map((_, j) => {
-                    const day = week[j];
-                    return (
-                      <div
-                        key={j}
-                        title={
-                          day
-                            ? `${day.count} contribution${day.count !== 1 ? "s" : ""} on ${new Date(day.date).toLocaleDateString("en-IN", {
+      <div className="no-scrollbar mt-5 overflow-x-auto">
+        <div className="min-w-fit">
+          <div className="ml-[34px] mb-1.5 flex gap-[3px]">
+            {monthLabels.map((label, i) => (
+              <div
+                key={i}
+                className="w-3 text-center font-mono text-[9px] text-faint"
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-[3px]">
+            {weeks.map((week, i) => (
+              <div key={i} className="flex flex-col gap-[3px]">
+                {Array.from({ length: 7 }).map((_, j) => {
+                  const day = week[j];
+                  return (
+                    <div
+                      key={j}
+                      title={
+                        day
+                          ? `${day.count} contribution${day.count !== 1 ? "s" : ""} on ${new Date(day.date).toLocaleDateString("en-IN", {
                               year: "numeric",
                               month: "short",
                               day: "numeric",
                             })}`
-                            : undefined
-                        }
-                        className={`rounded-[4px] sm:rounded-[3px] w-[clamp(14px,3vw,16px)] h-[clamp(14px,3vw,16px)] ${day ? levelColors[day.level] : "bg-transparent"}`}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
+                          : undefined
+                      }
+                      className={`h-3 w-3 rounded-[2px] ${
+                        day ? levelColors[day.level] : "bg-transparent"
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -11,16 +11,36 @@ export type PostMeta = {
 
 type PostEntry = PostMeta & { content: string };
 
+export type PostWithReadingTime = PostMeta & { readingTime: number; words: number };
+
 const posts: PostEntry[] = postsData as PostEntry[];
 
-export function getAllPosts(): PostMeta[] {
-  return posts.map(({ content: _content, ...meta }) => meta);
+function countWords(markdown: string): number {
+  return markdown
+    // strip code fences and inline code so they don't inflate the count
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
 }
 
-export function getPostBySlug(slug: string): { meta: PostMeta; content: string } | null {
+const detailed = posts.map((post) => {
+  const words = countWords(post.content);
+  // ~210 wpm is a comfortable technical reading pace.
+  const readingTime = Math.max(1, Math.round(words / 210));
+  return { ...post, words, readingTime };
+});
+
+export function getAllPostsDetailed(): PostWithReadingTime[] {
+  return detailed.map(({ content: _content, ...meta }) => meta);
+}
+
+export function getPostBySlug(
+  slug: string
+): { meta: PostMeta & { readingTime: number; words: number }; content: string } | null {
   const post =
-    posts.find((p) => p.slug === slug) ||
-    posts.find((p) => p.slug.toLowerCase() === slug.toLowerCase());
+    detailed.find((p) => p.slug === slug) ||
+    detailed.find((p) => p.slug.toLowerCase() === slug.toLowerCase());
 
   if (!post) return null;
 

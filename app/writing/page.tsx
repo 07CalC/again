@@ -1,71 +1,81 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
-import { Calendar, ArrowRight } from "lucide-react";
+import { getAllPostsDetailed } from "@/lib/posts";
 
-export const dynamic = "force-static";
-export const revalidate = false;
+export const metadata: Metadata = {
+  title: "Writing",
+  description:
+    "Long-form articles, technical notes, and experiments — databases, storage engines, the web, and whatever else I'm taking apart.",
+};
 
 export default function WritingPage() {
-  const posts = getAllPosts();
+  const posts = getAllPostsDetailed();
+
+  const years = Array.from(new Set(posts.map((p) => new Date(p.date).getFullYear())))
+    .sort((a, b) => b - a);
 
   return (
-    <div className="min-h-screen max-w-[1200px] mx-auto px-8 pb-24 pt-8 flex flex-col">
-      <div className="flex flex-col gap-12">
-        <div className="flex flex-col gap-3">
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-gray-900 dark:text-gray-100">
-            Writing
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 font-mono max-w-lg">
-            Thoughts, tutorials, and ramblings about software, systems, and the occasional opinion.
-          </p>
-        </div>
+    <main className="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+      <header className="pb-12 pt-14 sm:pb-14 sm:pt-20">
+        <p className="voice-label">/writing</p>
+        <h1 className="voice-display mt-4 text-5xl text-fg sm:text-6xl">
+          Writing<span className="text-accent">.</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+          Long-form articles, short notes, and experiments — mostly about how
+          systems actually work underneath: databases, storage engines, the
+          web, the occasional strong opinion.
+        </p>
+        <p className="mt-4 font-mono text-xs text-faint">
+          {posts.length} posts ·{" "}
+          <a href="/feed.xml" className="link-quiet">
+            RSS
+          </a>
+        </p>
+      </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {posts.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/writing/${post.slug}`}
-              className="group rounded-2xl border border-gray-200/60 dark:border-white/10 bg-white/40 dark:bg-white/[0.03] p-5 backdrop-blur-xl transition-all hover:border-gray-300/80 dark:hover:border-white/20 hover:shadow-lg"
-            >
-              <div className="flex flex-col gap-3 h-full">
-                <div className="flex items-center gap-2 text-xs font-mono text-gray-500 dark:text-gray-500">
-                  <Calendar size={12} />
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </div>
-
-                <h2 className="text-base font-medium text-gray-900 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-                  {post.title}
-                </h2>
-
-                <p className="text-[13px] text-gray-500 dark:text-gray-400 leading-relaxed flex-grow line-clamp-3">
-                  {post.description}
-                </p>
-
-                {post.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-gray-200/60 dark:bg-white/5 text-gray-500 dark:text-gray-500"
-                      >
-                        {tag}
+      <div className="max-w-3xl">
+        {years.map((year) => (
+          <section key={year} className="mt-2 first:mt-0">
+            <div className="flex items-baseline justify-between">
+              <h2 className="voice-label">{year}</h2>
+              <hr className="rule flex-1 ml-6" />
+            </div>
+            <div className="mt-2 divide-y divide-line">
+              {posts
+                .filter((p) => new Date(p.date).getFullYear() === year)
+                .map((post) => (
+                  <Link
+                    key={post.slug}
+                    href={`/writing/${post.slug}`}
+                    className="group block py-5 sm:py-6"
+                  >
+                    <div className="flex items-baseline justify-between gap-4">
+                      <h3 className="voice-display min-w-0 text-[1.65rem] leading-tight text-fg transition-colors group-hover:text-accent sm:text-3xl">
+                        {post.title}
+                      </h3>
+                      <span className="voice-meta shrink-0 pt-1.5 text-faint">
+                        {post.readingTime} min
                       </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex items-center gap-1 text-xs font-mono text-blue-500 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity mt-1">
-                  read post <ArrowRight size={12} />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+                    </div>
+                    <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+                      {post.description}
+                    </p>
+                    <p className="mt-3 font-mono text-[11px] tracking-wide text-faint">
+                      {new Date(post.date).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                      })}
+                      {post.tags.length > 0 && (
+                        <span className="ml-3">{post.tags.join(" · ").toLowerCase()}</span>
+                      )}
+                    </p>
+                  </Link>
+                ))}
+            </div>
+          </section>
+        ))}
       </div>
-    </div>
+    </main>
   );
 }
