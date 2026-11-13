@@ -14,8 +14,8 @@ import { getDB, query, queryOne, execute, type DB } from "@/db";
 
 export const SHELF_CATEGORIES = [
   "books",
-  "anime",
   "movies",
+  "anime",
   "papers",
   "games",
   "other",
@@ -152,6 +152,22 @@ export async function listPublishedShelfItems(
     `SELECT * FROM shelf_items
      WHERE published = 1
      ORDER BY addedAt DESC, createdAt DESC`
+  );
+  return rows.map(toPublicItem);
+}
+
+export async function listPublishedShelfItemsByActivity(
+  db?: DB
+): Promise<PublicShelfItem[]> {
+  const d = db ?? (await getDB());
+  const rows = await query<ShelfItemRow>(
+    d,
+    `SELECT * FROM shelf_items
+     WHERE published = 1
+     ORDER BY
+       CASE WHEN status = 'current' THEN 0 ELSE 1 END ASC,
+       COALESCE(updatedAt, createdAt, addedAt) DESC,
+       addedAt DESC`
   );
   return rows.map(toPublicItem);
 }

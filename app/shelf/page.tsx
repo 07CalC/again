@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import ShelfBrowser from "@/components/ShelfBrowser";
-import { listPublishedShelfItems } from "@/lib/shelf";
+import ShelfCollections from "@/components/ShelfCollections";
+import { listPublishedShelfItemsByActivity } from "@/lib/shelf";
 
 export const metadata: Metadata = {
   title: "The Shelf",
@@ -13,21 +13,21 @@ export const dynamic = "force-dynamic";
 
 function ShelfSkeleton() {
   return (
-    <div aria-hidden>
-      <div className="border-y border-line py-4">
-        <div className="flex gap-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-3 w-16 bg-line" />
-          ))}
-        </div>
-      </div>
-      <div className="shelf-wall mt-10">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <div key={i} className="frame relative w-full" style={{ aspectRatio: "2 / 3" }}>
-            <div className="absolute inset-0 bg-line/60" />
+    <div aria-hidden className="space-y-14 border-t border-line pt-10">
+      {Array.from({ length: 3 }).map((_, row) => (
+        <div key={row}>
+          <div className="h-8 w-32 bg-line/60" />
+          <div className="mt-6 flex gap-4 overflow-hidden">
+            {Array.from({ length: 5 }).map((__, item) => (
+              <div
+                key={item}
+                className="frame relative w-[180px] shrink-0 bg-line/60"
+                style={{ aspectRatio: "2 / 3" }}
+              />
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -35,7 +35,7 @@ function ShelfSkeleton() {
 async function ShelfWall() {
   let items;
   try {
-    items = await listPublishedShelfItems();
+    items = await listPublishedShelfItemsByActivity();
   } catch (err) {
     // DB unreachable — fail soft, the page itself must still render.
     console.error("shelf: failed to load items", err);
@@ -46,7 +46,7 @@ async function ShelfWall() {
     );
   }
 
-  return <ShelfBrowser items={items} />;
+  return <ShelfCollections items={items} />;
 }
 
 export default function ShelfPage() {
